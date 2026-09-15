@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EFFORTLESS AI SALES OS</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="app">
+        <!-- Loading Screen -->
+        <div id="loadingScreen" class="screen hidden">
+            <div class="loading-container">
+                <h1>EFFORTLESS AI SALES OS</h1>
+                <p>Loading...</p>
+            </div>
+        </div>
+
+        <!-- Main App -->
+        <div id="mainApp" class="hidden">
+            <!-- Header -->
+            <header class="header">
+                <div class="header-left">
+                    <h1 class="logo">EFFORTLESS</h1>
+                    <span class="logo-subtitle">AI SALES OS</span>
+                </div>
+                <div class="header-right">
+                    <button id="resetBtn" class="btn-secondary btn-small">Reset</button>
+                </div>
+            </header>
+
+            <!-- Main Content Area -->
+            <main class="main-content">
+                <!-- Dashboard Screen -->
+                <div id="dashboardScreen" class="screen active">
+                    <div class="container">
+                        <div class="dashboard-header">
+                            <h2>Dashboard</h2>
+                            <button id="newCampaignBtn" class="btn-primary btn-large">+ NEW CAMPAIGN</button>
+                        </div>
+
+                        <div class="metrics-grid">
+                            <div class="metric-card hot">
+                                <div class="metric-value" id="hotLeadsCount">0</div>
+                                <div class="metric-label">HOT LEADS</div>
+                            </div>
+                            <div class="metric-card">
+                                <div class="metric-value" id="totalLeadsCount">0</div>
+                                <div class="metric-label">TOTAL LEADS</div>
+                            </div>
+                            <div class="metric-card">
+                                <div class="metric-value" id="repliesCount">0</div>
+                                <div class="metric-label">REPLIES</div>
+                            </div>
+                            <div class="metric-card">
+                                <div class="metric-value" id="appointmentsCount">0</div>
+                                <div class="metric-label">APPOINTMENTS</div>
+                            </div>
+                            <div class="metric-card">
+                                <div class="metric-value" id="wonCount">0</div>
+                                <div class="metric-label">WON</div>
+                            </div>
+                            <div class="metric-card">
+                                <div class="metric-value" id="pipelineValue">$0</div>
+                                <div class="metric-label">PIPELINE VALUE</div>
+                            </div>
+                        </div>
+
+                        <div class="demo-section">
+                            <button id="loadDemoBtn" class="btn-primary">Load Demo Leads (10 B2B Companies)</button>
+                            <p class="demo-text">First time? Load sample data to explore the system.</p>
+                        </div>
+
+                        <div class="recent-leads">
+                            <h3>Recent Hot Leads</h3>
+                            <div id="hotLeadsList" class="leads-list">
+                                <p class="empty-state">No leads yet. Upload a CSV or load demo data.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Leads Screen -->
+                <div id="leadsScreen" class="screen hidden">
+                    <div class="container">
+                        <div class="screen-header">
+                            <h2>Leads</h2>
+                        </div>
+
+                        <div class="filters-section">
+                            <input type="text" id="searchInput" placeholder="Search by name, company, email..." class="search-input">
+                            <div class="filter-buttons">
+                                <button class="filter-btn active" data-filter="all">All</button>
+                                <button class="filter-btn" data-filter="HOT">🔥 Hot</button>
+                                <button class="filter-btn" data-filter="WARM">🌡️ Warm</button>
+                                <button class="filter-btn" data-filter="COLD">❄️ Cold</button>
+                            </div>
+                        </div>
+
+                        <div class="file-upload">
+                            <input type="file" id="csvInput" accept=".csv" class="file-input">
+                            <label for="csvInput" class="btn-secondary">📤 Upload CSV</label>
+                        </div>
+
+                        <div id="leadsList" class="leads-list">
+                            <p class="empty-state">No leads yet.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Lead Detail Screen -->
+                <div id="leadDetailScreen" class="screen hidden">
+                    <div class="container">
+                        <button id="backBtn" class="btn-secondary btn-small">← Back</button>
+                        
+                        <div class="lead-detail">
+                            <div class="lead-header">
+                                <h2 id="detailCompany"></h2>
+                                <p id="detailContact"></p>
+                            </div>
+
+                            <div class="detail-section">
+                                <h3>Lead Intelligence</h3>
+                                <div class="intelligence-grid">
+                                    <div class="intel-item">
+                                        <label>Lead Score</label>
+                                        <div class="score-display">
+                                            <div class="score-value" id="detailScore">0</div>
+                                            <div class="score-bar">
+                                                <div id="detailScoreBar" class="score-bar-fill"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="intel-item">
+                                        <label>Temperature</label>
+                                        <div id="detailTemperature" class="temperature-badge">—</div>
+                                    </div>
+                                    <div class="intel-item">
+                                        <label>Signal</label>
+                                        <div id="detailSignal" class="signal-text">—</div>
+                                    </div>
+                                </div>
+
+                                <div class="intel-section">
+                                    <h4>Why This Lead Matters</h4>
+                                    <p id="detailWhy"></p>
+                                </div>
+
+                                <div class="intel-section">
+                                    <h4>Likely Problem</h4>
+                                    <p id="detailProblem"></p>
+                                </div>
+
+                                <div class="intel-section">
+                                    <h4>Recommended Offer</h4>
+                                    <p id="detailOffer"></p>
+                                </div>
+
+                                <div class="intel-section">
+                                    <h4>Best Channel</h4>
+                                    <p id="detailChannel"></p>
+                                </div>
+                            </div>
+
+                            <div class="detail-section">
+                                <h3>Contact Information</h3>
+                                <div class="contact-grid">
+                                    <div class="contact-item">
+                                        <label>Email</label>
+                                        <a id="detailEmail" href="" target="_blank"></a>
+                                    </div>
+                                    <div class="contact-item">
+                                        <label>Phone</label>
+                                        <p id="detailPhone">—</p>
+                                    </div>
+                                    <div class="contact-item">
+                                        <label>Website</label>
+                                        <a id="detailWebsite" href="" target="_blank"></a>
+                                    </div>
+                                    <div class="contact-item">
+                                        <label>Facebook</label>
+                                        <a id="detailFacebook" href="" target="_blank"></a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="detail-section">
+                                <h3>Pipeline Status</h3>
+                                <select id="statusSelect" class="status-select">
+                                    <option value="NEW">NEW</option>
+                                    <option value="QUALIFIED">QUALIFIED</option>
+                                    <option value="CONTACTED">CONTACTED</option>
+                                    <option value="REPLIED">REPLIED</option>
+                                    <option value="INTERESTED">INTERESTED</option>
+                                    <option value="APPOINTMENT">APPOINTMENT</option>
+                                    <option value="PROPOSAL">PROPOSAL</option>
+                                    <option value="WON">WON</option>
+                                    <option value="LOST">LOST</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Campaigns Screen -->
+                <div id="campaignsScreen" class="screen hidden">
+                    <div class="container">
+                        <div class="screen-header">
+                            <h2>Campaigns</h2>
+                        </div>
+
+                        <div id="campaignsList" class="campaigns-list">
+                            <p class="empty-state">No campaigns yet.</p>
+                        </div>
+
+                        <div class="new-campaign-form hidden" id="newCampaignForm">
+                            <h3>Create New Campaign</h3>
+                            <div class="form-group">
+                                <label>Campaign Name</label>
+                                <input type="text" id="campaignName" placeholder="e.g., US Agency Appointment Setters">
+                            </div>
+                            <div class="form-group">
+                                <label>Description</label>
+                                <textarea id="campaignDescription" placeholder="e.g., US marketing agencies with 5-50 employees hiring appointment setters or needing more sales"></textarea>
+                            </div>
+                            <button id="createCampaignBtn" class="btn-primary">Create Campaign</button>
+                            <button id="cancelCampaignBtn" class="btn-secondary">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Inbox Screen -->
+                <div id="inboxScreen" class="screen hidden">
+                    <div class="container">
+                        <div class="screen-header">
+                            <h2>Inbox</h2>
+                        </div>
+
+                        <div id="conversationsList" class="conversations-list">
+                            <p class="empty-state">No conversations yet.</p>
+                        </div>
+
+                        <button id="newConversationBtn" class="btn-primary">+ New Conversation</button>
+
+                        <div class="new-conversation-form hidden" id="newConversationForm">
+                            <h3>Log Conversation</h3>
+                            <div class="form-group">
+                                <label>Select Lead</label>
+                                <select id="conversationLeadSelect" class="form-select"></select>
+                            </div>
+                            <div class="form-group">
+                                <label>Prospect's Message</label>
+                                <textarea id="conversationMessage" placeholder="Paste the prospect's reply here..."></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label>Intent</label>
+                                <select id="conversationIntent" class="form-select">
+                                    <option value="INTERESTED">INTERESTED</option>
+                                    <option value="QUESTION">QUESTION</option>
+                                    <option value="OBJECTION">OBJECTION</option>
+                                    <option value="NOT_INTERESTED">NOT INTERESTED</option>
+                                    <option value="NEEDS_FOLLOW_UP">NEEDS FOLLOW-UP</option>
+                                    <option value="READY_TO_BOOK">READY TO BOOK</option>
+                                </select>
+                            </div>
+                            <button id="logConversationBtn" class="btn-primary">Log Conversation</button>
+                            <button id="cancelConversationBtn" class="btn-secondary">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Appointments Screen -->
+                <div id="appointmentsScreen" class="screen hidden">
+                    <div class="container">
+                        <div class="screen-header">
+                            <h2>Appointments</h2>
+                        </div>
+
+                        <div id="appointmentsList" class="appointments-list">
+                            <p class="empty-state">No appointments yet.</p>
+                        </div>
+
+                        <button id="newAppointmentBtn" class="btn-primary">+ New Appointment</button>
+
+                        <div class="new-appointment-form hidden" id="newAppointmentForm">
+                            <h3>Schedule Appointment</h3>
+                            <div class="form-group">
+                                <label>Lead</label>
+                                <select id="appointmentLeadSelect" class="form-select"></select>
+                            </div>
+                            <div class="form-group">
+                                <label>Date</label>
+                                <input type="date" id="appointmentDate" class="form-select">
+                            </div>
+                            <div class="form-group">
+                                <label>Time</label>
+                                <input type="time" id="appointmentTime" class="form-select">
+                            </div>
+                            <div class="form-group">
+                                <label>Deal Value</label>
+                                <input type="number" id="appointmentValue" placeholder="0" class="form-select">
+                            </div>
+                            <button id="createAppointmentBtn" class="btn-primary">Create Appointment</button>
+                            <button id="cancelAppointmentBtn" class="btn-secondary">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Revenue Screen -->
+                <div id="revenueScreen" class="screen hidden">
+                    <div class="container">
+                        <div class="screen-header">
+                            <h2>Revenue Tracking</h2>
+                        </div>
+
+                        <div class="revenue-summary">
+                            <div class="revenue-card">
+                                <label>Expected Revenue</label>
+                                <div class="revenue-value" id="expectedRevenue">$0</div>
+                            </div>
+                            <div class="revenue-card">
+                                <label>Won Revenue</label>
+                                <div class="revenue-value won" id="wonRevenue">$0</div>
+                            </div>
+                            <div class="revenue-card">
+                                <label>Expected Commission</label>
+                                <div class="revenue-value" id="expectedCommission">$0</div>
+                            </div>
+                        </div>
+
+                        <div id="revenueList" class="revenue-list">
+                            <p class="empty-state">No revenue records yet.</p>
+                        </div>
+
+                        <button id="newRevenueBtn" class="btn-primary">+ New Deal</button>
+
+                        <div class="new-revenue-form hidden" id="newRevenueForm">
+                            <h3>Record Deal</h3>
+                            <div class="form-group">
+                                <label>Lead</label>
+                                <select id="revenueLeadSelect" class="form-select"></select>
+                            </div>
+                            <div class="form-group">
+                                <label>Deal Value</label>
+                                <input type="number" id="dealValue" placeholder="0" class="form-select">
+                            </div>
+                            <div class="form-group">
+                                <label>Commission %</label>
+                                <input type="number" id="commissionPercent" placeholder="15" class="form-select" value="15">
+                            </div>
+                            <div class="form-group">
+                                <label>Status</label>
+                                <select id="dealStatus" class="form-select">
+                                    <option value="PENDING">PENDING</option>
+                                    <option value="WON">WON</option>
+                                    <option value="LOST">LOST</option>
+                                </select>
+                            </div>
+                            <button id="createRevenueBtn" class="btn-primary">Add Deal</button>
+                            <button id="cancelRevenueBtn" class="btn-secondary">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </main>
+
+            <!-- Bottom Navigation -->
+            <nav class="bottom-nav">
+                <button class="nav-item active" data-screen="dashboardScreen">
+                    <span class="nav-icon">🏠</span>
+                    <span class="nav-label">Home</span>
+                </button>
+                <button class="nav-item" data-screen="leadsScreen">
+                    <span class="nav-icon">👥</span>
+                    <span class="nav-label">Leads</span>
+                </button>
+                <button class="nav-item" data-screen="campaignsScreen">
+                    <span class="nav-icon">📢</span>
+                    <span class="nav-label">Campaigns</span>
+                </button>
+                <button class="nav-item" data-screen="inboxScreen">
+                    <span class="nav-icon">💬</span>
+                    <span class="nav-label">Inbox</span>
+                </button>
+                <button class="nav-item" data-screen="appointmentsScreen">
+                    <span class="nav-icon">📅</span>
+                    <span class="nav-label">Appointments</span>
+                </button>
+                <button class="nav-item" data-screen="revenueScreen">
+                    <span class="nav-icon">💰</span>
+                    <span class="nav-label">Revenue</span>
+                </button>
+            </nav>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
